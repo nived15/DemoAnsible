@@ -1,0 +1,35 @@
+- name: Ensure httpd is installed
+  yum:
+    name: httpd
+    state: present
+
+- name: Ensure httpd service is running and is enabled
+  service:
+    name: httpd
+    state: started
+    enabled: true
+
+- name: Ensure directory is created
+  file:
+    path: /nived
+    state: directory
+    setype: httpd_sys_content_t
+
+- name: Ensure config for httpd exists
+  template:
+    src: httpd.conf.j2
+    dest: "{{ httpd_conf_path }}"
+  notify: restart httpd
+
+- name: Ensure index file exists
+  template:
+    src: index.html.j2
+    dest: /nived/index.html
+    setype: httpd_sys_content_t
+
+- name: Ensure firewalld port is open
+  firewalld:
+    service: http
+    state: enabled
+    immediate: true
+    permanent: true

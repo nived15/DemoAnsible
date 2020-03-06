@@ -1,0 +1,15 @@
+---
+# tasks file for nived.apache
+- name: Importing demo-1 file to configure web server
+  import_tasks: demo-1.yml
+  vars:
+    httpd_conf_path: "/etc/httpd/conf.d/nived.conf"
+    ansible_managed: anisble managed
+
+- name: Import demo-2 file to configure /etc/hosts for resolving hosts
+  import_tasks: demo-2.yml
+  vars:
+    ansible_managed: "This is managed by ANSIBLE"
+
+- name: Import demo-3 file to switch selinux to permissive and fetching log files
+  import_tasks: demo-3.yml

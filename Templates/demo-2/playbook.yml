@@ -1,0 +1,10 @@
+- name: Test magic variables with jinja2 templates
+  hosts: all
+  vars:
+    ansible_managed: "This is managed by ANSIBLE"
+  tasks:
+  - name: Ensure jinja template is copied
+    template:
+      src: hosts.j2 
+      dest: /tmp/hosts
+    when: inventory_hostname in groups['webservers']

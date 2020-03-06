@@ -1,0 +1,10 @@
+- name: Ensure httpd is installed
+  yum:
+    name: httpd
+    state: present
+
+- name: Ensure httpd service is running
+  service:
+    name: httpd
+    state: started
+    enabled: true

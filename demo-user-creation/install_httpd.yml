@@ -1,0 +1,21 @@
+- name: Check web server config
+  hosts: all
+  tasks:
+  - name: Use block and rescue
+    block:
+      - name: Install wrong pkg
+        yum:
+          name: qwsaed
+          state: present
+
+    rescue:
+      - name: Install tree
+        yum:
+          name: tree
+          state: present
+
+    always:
+      - name: Perform task always
+        debug:
+          msg: "Block failed"
+

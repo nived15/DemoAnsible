@@ -1,0 +1,14 @@
+- name: Test some facts
+  hosts: servera.lab.example.com
+  tasks:
+  - name: debug some info
+    debug:
+      msg: |
+        The system is a {{ ansible_distribution }}
+        The Ip address is {{ ansible_default_ipv4.address }}
+        The kernel version is {{ ansible_kernel }}
+        The memory free is {{ ansible_memfree_mb }}
+
+  - name: Regather facts
+    setup:
+

@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+
+<Directory /nived >
+Require all granted
+</Directory>
+
+<VirtualHost *:80>
+servername {{ ansible_fqdn }}
+DocumentRoot /nived
+</VirtualHost>

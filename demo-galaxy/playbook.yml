@@ -1,0 +1,12 @@
+- name: Playbook using nived.apache role to configure webserver
+  hosts: all
+  vars:
+    timesync_ntp_servers:
+      - hostname: classroom.example.com
+        iburst: yes
+  roles:
+    - rhel-system-roles.timesync
+      
+
+
+

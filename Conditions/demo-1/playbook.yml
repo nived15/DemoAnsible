@@ -1,0 +1,18 @@
+- name: Playbook using loops
+  hosts: servera.lab.example.com
+  vars:
+    pkg:
+      - httpd
+      - ftp
+      - tree
+
+  tasks:
+  - name: Install httpd ftp and tree packages
+    yum:
+      name: "{{ item }}" 
+      state: present
+    loop: "{{ pkg }}"
+    register: output
+
+  - debug:
+      var: output

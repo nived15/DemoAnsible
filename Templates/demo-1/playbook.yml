@@ -1,0 +1,66 @@
+- name: Ensure web server is configured
+  hosts: all
+  vars:
+    httpd_conf_path: "/etc/httpd/conf.d/nived.conf"
+    ansible_managed: anisble managed
+  tasks:
+  - name: Ensure httpd is installed
+    yum:
+      name: httpd
+      state: present
+
+  - name: Ensure httpd service is running and is enabled
+    service:
+      name: httpd
+      state: started
+      enabled: true
+
+  - name: Ensure directory is created
+    file:
+      path: /nived
+      state: directory
+      setype: httpd_sys_content_t
+
+  - name: Ensure config for httpd exists
+    template:
+      src: httpd.conf.j2
+      dest: "{{ httpd_conf_path }}"
+    notify: restart httpd
+
+  - name: Ensure index file exists
+    template:
+      src: index.html.j2
+      dest: /nived/index.html
+      setype: httpd_sys_content_t
+
+  - name: Ensure firewalld port is open
+    firewalld:
+      service: http
+      state: enabled
+      immediate: true
+      permanent: true
+  
+  handlers:
+    - name: restart httpd
+      service:
+        name: httpd
+        state: restarted
+
+- name: Check if webserver is working
+  hosts: localhost
+  become: False
+  vars:
+    server_names:
+      - servera
+      - serverb
+  tasks:
+  - name: Check if content is returned
+    uri:
+      url: "http://{{ item }}"
+      return_content: true
+    loop: "{{ server_names }}"
+    register: output
+
+  - name: Debug the output to check if everything is working fine
+    debug:
+      var: output.results

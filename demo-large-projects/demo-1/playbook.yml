@@ -1,0 +1,30 @@
+- name: Single host
+  hosts: web.example.com
+  tasks:
+  - debug:
+      msg: "The current host is {{ inventory_hostname }}"
+
+- name: ALL HOSTS
+  hosts: all
+  tasks:
+  - debug:
+      msg: "The current host is {{ inventory_hostname }}"
+
+- name: All HOSTS in test group AND also a part of datacenter1 group
+  hosts: 'test:&datacenter1'
+  tasks:
+  - debug:
+      msg: "The current host is {{ inventory_hostname }}"
+
+- name: All HOSTS in test group but NOT a part of datacenter1 group
+  hosts: 'test:!datacenter1'
+  tasks:
+  - debug:
+      msg: "The current host is {{ inventory_hostname }}"
+
+- name: Host pattern using wildcards
+  hosts: 'test*'
+  tasks:
+  - debug:
+      msg: "The current host is {{ inventory_hostname }}"
+   

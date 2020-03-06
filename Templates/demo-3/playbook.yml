@@ -1,0 +1,36 @@
+- name: Playbook to work with file modules
+  hosts: dbservers
+  tasks:
+  - name: Ensure selinux is in permissive mode
+    lineinfile:
+      path: /etc/selinux/config
+      regexp: '^SELINUX=enforcing'
+      line: "SELINUX=permissive"
+
+  - name: Ensure /tmp/nived is present
+    file:
+      path: /tmp/nived
+      state: touch
+      owner: devops
+      group: devops
+      mode: 0600
+      setype: samba_share_t
+
+  - name: Add blocks of line in /tmp/nived file
+    blockinfile:
+      path: /tmp/nived
+      block: |
+        This is very big big
+        block of lines
+        Adding a new line
+
+  - name: Set context for this file in Selinux policies
+    sefcontext:
+      target: "/tmp/nived(/.*)?"
+      setype: samba_share_t
+
+  - name: Fetch that line to control node
+    fetch:
+      src: /tmp/nived
+      dest: /tmp/nived-backup
+

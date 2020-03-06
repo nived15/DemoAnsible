@@ -1,0 +1,20 @@
+- name: Playbook to create custom facts
+  hosts: all
+  tasks:
+  - name: Ensure the directory is present
+    file:
+      path: /etc/ansible/facts.d
+      state: directory
+      recurse: true
+
+  - name: Ensure custom facts are injected
+    copy:
+      src: custom.fact
+      dest: /etc/ansible/facts.d/custom.fact
+
+  - name: Regather facts
+    setup:
+
+  - name: Debug the custom facts ONLY
+    debug:
+      msg: "{{ ansible_facts['ansible_local']['custom']['packages'] }}"

@@ -1,0 +1,17 @@
+- name: Test playbook to check variable presedence
+  hosts: servera.lab.example.com
+  vars:
+    pkg_name: tree
+  tasks:
+  - block:
+    - name: debug the variable
+      debug:
+        msg: The package name is {{ pkg_name }}
+      vars:
+        pkg_name: "task level variable"
+
+    - name: debug using block variable
+      debug:
+        msg: "The variable is defined as {{ pkg_name }}"
+    vars:
+      pkg_name: "block level variable"

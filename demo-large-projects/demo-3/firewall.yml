@@ -1,0 +1,17 @@
+- name: Ensure firewalld is installed
+  yum:
+    name: firewalld
+    state: present
+
+- name: Ensure firewalld service is running
+  service:
+    name: firewalld
+    state: started
+    enabled: true
+
+- name: Open http port
+  firewalld:
+    service: http
+    state: enabled
+    immediate: true
+    permanent: true
