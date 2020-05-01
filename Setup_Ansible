@@ -1,0 +1,47 @@
+Procedure to setup Ansible configuration on Control node:-
+
+1-Create control nodes and managed nodes on digital ocen.
+Add all the servers(control/managed) as below in /etc/hosts:--
+ vi /etc/hosts
+165.22.211.157 control.lab.example.com control
+165.22.215.62 servera.lab.example.com servera
+167.71.234.90 serverb.lab.example.com serverb
+165.22.218.14 serverc.lab.example.com serverc
+ 
+2-Create ansible.cfg file under /root
+[root@control ~]# vi ansible.cfg
+======================
+[defaults]
+remote_user = root
+inventory = hosts
+deprecation_warnings=False
+-------------------------------------
+3. Install GIT
+sudo apt install git-all
+[root@control ~]# git --version git
+git version 2.26.2
+Then run the below command:-
+1-git clone https://github.com/nived15/hdfc-Ansible
+ 2-git pull
+4. Install Ansible
+sudo dnf install ansible
+
+
+5. Run  ssh-keygen to create id_rsa & id_rsa.pub key under /root/.ssh
+[root@control .ssh]# ls -lrt
+total 16
+-rw-------. 1 root root  398 Apr 30 09:15 authorized_keys
+-rw-r--r--. 1 root root  566 May  1 09:38 id_rsa.pub
+-rw-------. 1 root root 2655 May  1 09:38 id_rsa
+-rw-r--r--. 1 root root  734 May  1 11:39 known_hosts
+
+6. Run  ssh-copy-id to copy the pub key on all the managed nodes
+ ssh-copy-id -i .ssh/id_rsa.pub 165.22.215.62
+ ssh-copy-id -i .ssh/id_rsa.pub 167.71.234.90
+ ssh-copy-id -i .ssh/id_rsa.pub 165.22.218.14
+====================================================
+7. Set password for all managed nodes via control nodes with below command:-
+ ansible all -m shell -a "echo 'redhat' | passwd --stdin root"
+
+Done..all set!
+
