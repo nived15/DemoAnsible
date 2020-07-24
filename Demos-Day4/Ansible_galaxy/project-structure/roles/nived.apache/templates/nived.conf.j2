@@ -1,0 +1,10 @@
+<Directory /var/www/html>
+Require all granted
+</Directory>
+
+<VirtualHost *:80>
+ServerName {{ ansible_fqdn }}
+DocumentRoot /var/www/html
+ErrorLog logs/{{ ansible_hostname }}_error_log
+CustomLog logs/{{ ansible_hostname }}_access_log combined
+</VirtualHost>

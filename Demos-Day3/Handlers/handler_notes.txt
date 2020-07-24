@@ -1,0 +1,6 @@
+RULES:
+=======
+
+1. Only if there is a changed state, handlers will run!
+2. No matter how many times you notify the handler, handler will run ONLY once!
+3. Doesn't matter how you order notifications, handler's will run in the order defined in handler section.

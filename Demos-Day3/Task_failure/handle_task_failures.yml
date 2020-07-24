@@ -1,0 +1,30 @@
+- name: Playbook to demonstrate task failures
+  hosts: servera
+  force_handlers: true
+
+  handlers:
+  - name: testing
+    user: name=nived state=present
+
+  tasks:
+  - name: Ignoring errors on a task level
+    yum:
+      name: idontexist
+      state: latest
+    ignore_errors: true
+
+  - name: Ensuring tasks fail when certain conditions are not met
+    command: id nived
+    register: output
+    failed_when: output.rc != 0
+
+  - name: Ensure ansible does not report a changed state when no changes are made
+    command: id nived
+    changed_when: false
+
+  - name: Sample task for demo of force handlers
+    command: id nived
+    notify: testing
+
+  - name: Forcing handlers to run even when task failure happens
+    command: nosuchcommand

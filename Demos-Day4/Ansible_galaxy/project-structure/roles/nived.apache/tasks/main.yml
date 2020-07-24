@@ -1,0 +1,21 @@
+---
+# tasks file for nived.apache
+
+- name: Ensure httpd package is installed
+  yum:
+    name: "{{ web_pkg_name }}"
+    state: present
+
+- name: Ensure httpd config and web files are in place
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop: "{{ httpd_files }}"
+  notify: restart_httpd
+
+- name: Ensure firewall port is open for http
+  firewalld:
+    service: http
+    state: enabled
+    permanent: true
+    immediate: true

@@ -1,0 +1,7 @@
+[webservers]
+servera
+serverb
+
+[ntpservers]
+serverc
+serverd

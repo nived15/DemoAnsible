@@ -1,0 +1,4 @@
+- name: Playbook to ensure apache role is installed on nodes
+  hosts: webservers
+  roles:
+    - nived.apache

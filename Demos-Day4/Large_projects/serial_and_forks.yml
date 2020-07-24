@@ -1,0 +1,16 @@
+- name: Play1 showing a demo of forks
+  hosts: all
+  gather_facts: false
+  tasks:
+  - debug: 
+      var: inventory_hostname
+    tags: forks
+
+- name: Play2 showing demo of serial
+  hosts: all
+  gather_facts: false
+  serial: 2
+  tasks:
+  - debug: 
+      var: inventory_hostname
+    tags: serial

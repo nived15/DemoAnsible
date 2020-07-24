@@ -1,0 +1,4 @@
+- name: Testing motd role
+  hosts: servera,serverb
+  roles:
+    - arillso.motd 

@@ -1,0 +1,15 @@
+- name: Playbook to demo include and import tasks
+  hosts: servera
+  gather_facts: false
+  tasks:
+  - name: INCLUDE tasks section
+    include_tasks: my_include_tasks.yml
+#    when: pkg_name is defined
+    tags:
+      - include
+
+  - name: IMPORT tasks section
+    import_tasks: my_import_tasks.yml
+#    when: pkg_name is defined
+    tags:
+      - import

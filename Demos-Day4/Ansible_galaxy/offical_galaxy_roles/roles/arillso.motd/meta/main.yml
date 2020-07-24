@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  author: arillso
+  license: MIT
+  description: Configures dynamic motd file on Ubuntu and Centos.
+  min_ansible_version: 2.9
+  platforms:
+    - name: Debian
+      versions:
+        - wheezy
+        - jessie
+        - stretch
+    - name: Ubuntu
+      versions:
+        - trusty
+        - xenial
+    - name: EL
+      versions:
+        - 6
+        - 7

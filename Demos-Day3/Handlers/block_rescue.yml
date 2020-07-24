@@ -1,0 +1,14 @@
+- name: Play to demo block and rescue
+  hosts: servera
+  tasks:
+  - block:
+    - name: Ensure httpd is installed
+      yum:
+        name: httpd
+        state: present
+
+    rescue:
+    - name: Ensure correct package is installed
+      yum:
+        name: httasdpd
+        state: present

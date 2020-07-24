@@ -1,0 +1,11 @@
+- name: Ensure httpd package is installed
+  yum:
+    name: "{{ pkg_name }}"
+    state: present
+  vars:
+    pkg_name: httpd
+
+- name: Ensure webserver user is present
+  user:
+    name: webadmin
+    state: present

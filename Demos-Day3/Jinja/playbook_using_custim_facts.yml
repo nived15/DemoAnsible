@@ -1,0 +1,22 @@
+- name: Playbook to demo custo fact with jinja
+  hosts: all
+  tasks:
+  - name: Create custom fact directory
+    file:
+      path: /etc/ansible/facts.d
+      state: directory
+      recurse: true
+
+  - name: Add the custom fact to each node
+    copy:
+      src: nived.fact
+      dest: /etc/ansible/facts.d/nived.fact
+
+  - name: Regather facts
+    setup:
+  
+  - name: Copy jinja templates to each node
+    template:
+      src: templates/motd.j2
+      dest: /etc/motd
+

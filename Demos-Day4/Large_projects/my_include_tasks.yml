@@ -1,0 +1,11 @@
+- name: Ensure mariadb package is present
+  yum:
+    name: "{{ pkg_name }}"
+    state: latest
+  vars:
+    pkg_name: mariadb
+
+- name: Ensure dbuser is present
+  user:
+    name: dbuser
+    state: present

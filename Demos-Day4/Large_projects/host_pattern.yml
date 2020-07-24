@@ -1,0 +1,37 @@
+- name: Playbook to demonstrate  the host pattern '*'
+  hosts: prod*
+  gather_facts: false
+  tasks:
+  - debug: var=inventory_hostname
+
+- name: Playbook to demonstrate the host patterns '&'
+  hosts: production,&datacenter1
+  gather_facts: false
+  tasks:
+  - debug: var=inventory_hostname
+
+- name: Playbook to demonstrate the host patterns '!'
+  hosts: production,!datacenter1
+  gather_facts: false
+  tasks:
+  - debug: var=inventory_hostname
+
+- name: Playbook to demonstrate host patterns
+  hosts: ungrouped
+  gather_facts: false
+  tasks:
+  - debug: var=inventory_hostname
+
+- name: Playbook to demonstrate host patterns
+  hosts: '*'
+  gather_facts: false
+  tasks:
+  - debug: var=inventory_hostname
+
+- name: Playbook to demonstrate localhost host patterns
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - debug: var=inventory_hostname
+
+  

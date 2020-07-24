@@ -1,0 +1,10 @@
+pkg_name:
+ - screen
+ - samba
+ - tree
+ - vim
+ - bash
+
+srv_name:
+  - httpd
+  - sshd

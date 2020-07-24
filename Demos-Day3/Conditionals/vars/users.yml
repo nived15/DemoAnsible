@@ -1,0 +1,12 @@
+users:
+  - name: alice
+    uid: 2001
+    groups: wheel
+
+  - name: bob
+    uid: 3001
+    groups: webservers
+
+  - name: dave
+    uid: 4001
+    groups: webservers

@@ -1,0 +1,35 @@
+- name: Demonstrate how to work with conditions in playbook
+  hosts: all
+  tasks:
+  - name: Print msg only if memory available is greater than 512 MB
+    debug:
+      msg: "Hey, this machine has total free memory = {{ ansible_memfree_mb }}" 
+    when: ansible_memfree_mb < 200
+
+  - name: Print msg only if the machine is RedHat or Fedora
+    debug:
+      msg: Hey, this machine belongs to a Red Hat family  
+    when: ansible_distribution == "RedHat" or ansible_distribution == "Fedora"
+
+  - name: Ensure machine's selinux is enforcing in both config & runtime before reboot of machine
+    debug:
+      msg: "I'll reboot the machine after ensuring selinux is set in place"
+    when: ansible_selinux.config_mode == "enforcing" and ansible_selinux.mode == "enforcing"
+        # The same can be written like this below.
+        # - ansible_selinux.config_mode == "enforcing"
+        # - ansible_selinux.mode == "enforcing"
+
+  - name: Ensure service is restarted only if a package is already installed
+    debug:
+      msg: "{{ pkg_name }}"
+    when: pkg_name is defined
+    register: output
+
+  - name: Debug the registered variable
+    debug:
+      var: output
+
+  - name: Ensure output of previous task only when it succeded
+    debug:
+      msg: One machine only
+    when: output.msg is defined

@@ -1,0 +1,43 @@
+- name: Playbook to demo handlers
+  hosts: servera
+  vars:
+    httpd:
+      - src: files/index.html
+        dest: /var/www/html/index.html
+      - src: files/nived.conf 
+        dest: /etc/httpd/conf.d/nived.conf
+  handlers:
+    - name: restart_httpd
+      service:
+        name: httpd
+        state: restarted
+  tasks:
+  - block:
+    - name: Ensure httpd and firewalld is installed
+      yum:
+        name: 
+          - httpd
+          - firewalld
+        state: present
+
+    - name: Ensure webserver is configured
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+      loop: "{{ httpd }}"
+      notify: restart_httpd
+
+    - name: Ensure firewalld service is running
+      service:
+        name: firewalld
+        state: started
+
+    - name: Ensure http port is open in firewall
+      firewalld:
+        service: http
+        immediate: true
+        permanent: true
+        state: enabled
+
+
+      

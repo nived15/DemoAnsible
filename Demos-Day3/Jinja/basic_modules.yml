@@ -1,0 +1,43 @@
+- name: Playbook to demo some basic ansible modules
+  hosts:  all
+  tasks:
+  - name: Create a file with ownership, permission and selinux context
+    file:
+      path: /tmp/testfile
+      state: touch
+      mode: 0600
+      owner: nived
+      group: nived
+      setype: nfs_t
+
+  - name: Ensure a directory is present
+    file:
+      path: /home/nived/samba_dir
+      state: directory
+
+  - name: Ensure context of the directory is set to be persistant
+    sefcontext:
+      target: "/home/nived/samba_dir(/.*)?"
+      setype: nfs_t
+
+  - name: Ensure a line is present in a file
+    lineinfile:
+      path: /tmp/testfile
+      line: |
+              "I was here!"
+
+  - name: Fetch all message logs from managed nodes
+    fetch:
+      src: /var/log/messages
+      dest: backup_logs
+
+  - name: Get all info about a particular file
+    stat:
+      path: /etc/passwd
+    register: output
+
+  - name: debug the variable output
+    debug:
+      var: output
+
+

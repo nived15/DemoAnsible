@@ -1,0 +1,10 @@
+---
+# vars file for nived.apache
+
+web_pkg_name: httpd
+
+httpd_files:
+  - src: nived.conf.j2
+    dest: /etc/httpd/conf.d/nived.conf
+  - src: index.html.j2
+    dest: /var/www/html/index.html

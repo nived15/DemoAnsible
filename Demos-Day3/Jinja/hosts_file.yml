@@ -1,0 +1,8 @@
+- name: Learn to work with complicated jinja files first
+  hosts: all
+  tasks:
+  - name: Ensure template is copied /tmp/hosts
+    template:
+      src: templates/hosts.j2
+      dest: /tmp/hosts
+    

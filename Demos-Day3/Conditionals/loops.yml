@@ -1,0 +1,23 @@
+- name: Playbook to demo loops
+  hosts: serverb
+  vars_files:
+    - vars/packages.yml
+    - vars/users.yml
+  tasks:
+  - name: Ensure 5 packages are installed
+    yum:
+      name: "{{ item }}"
+      state: present
+    loop: "{{ pkg_name }}"
+
+  - name: Ensure webservers group is present
+    group:
+      name: webservers
+      state: present
+
+  - name: Ensure users are created
+    user:
+      name: "{{ item.name }}"
+      uid: "{{ item.uid }}"
+      groups: "{{ item.groups }}"
+    loop:  "{{ users }}"

@@ -1,0 +1,40 @@
+- name: Playbook to demo httpd using jinja2
+  hosts: all
+  vars:
+    configured_by_ansible: "MANAGED BY ANSIBLE"
+    httpd:
+      - src: templates/index.html.j2
+        dest: /var/www/html/index.html
+      - src: templates/nived.conf.j2 
+        dest: /etc/httpd/conf.d/nived.conf
+  handlers:
+    - name: restart_httpd
+      service:
+        name: httpd
+        state: restarted
+  tasks:
+    - name: Ensure httpd and firewalld is installed
+      yum:
+        name: 
+          - httpd
+          - firewalld
+        state: present
+
+    - name: Ensure webserver is configured
+      template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+      loop: "{{ httpd }}"
+      notify: restart_httpd
+
+    - name: Ensure firewalld service is running
+      service:
+        name: firewalld
+        state: started
+
+    - name: Ensure http port is open in firewall
+      firewalld:
+        service: http
+        immediate: true
+        permanent: true
+        state: enabled
