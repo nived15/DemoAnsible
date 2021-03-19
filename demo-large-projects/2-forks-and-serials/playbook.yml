@@ -1,0 +1,8 @@
+- name: Playbook to check forks
+  hosts: all
+  serial: 2
+  tasks:
+  - name: Ensure tree in installed
+    yum:
+      name: samba
+      state: present

@@ -1,0 +1,8 @@
+- name: Playbook to demo include tasks and import tasks
+  hosts: all
+  tasks:
+#  - name: Including httpd task file
+#    include_tasks: httpd.yml
+
+  - name: Importing task file
+    import_tasks: firewall.yml
