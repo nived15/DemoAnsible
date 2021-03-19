@@ -1,0 +1,52 @@
+- name: Playbook to configure partitions
+  hosts: all
+  vars_files:
+    - storage_vars.yml
+
+  tasks:
+  - name: Ensure partiton exists
+    parted:
+      device: /dev/vdb
+      number: "{{ item.number }}"
+      state: present
+      part_start: "{{ item.start }}"
+      part_end: "{{ item.end }}"
+    loop: "{{ partitions }}"
+    when: ansible_devices.vdb is defined
+
+  - name: Ensure volume group exists
+    lvg:
+      pvs: "{{ item.devices }}"
+      vg: "{{ item.name }}"
+    loop: "{{ volume_groups }}"
+    when: ansible_devices.vdb is defined
+
+  - name: Ensure lv is created
+    lvol:
+      vg: "{{ item.vgroup }}"
+      lv: "{{ item.name }}"
+      size: "{{ item.size }}"
+    loop: "{{ logical_volumes }}"
+    when: ansible_lvm.vgs is defined
+
+  - name: Ensure filesystem is there
+    filesystem:
+      fstype: ext4
+      dev: "/dev/{{ item.vgroup }}/{{ item.name }}"
+    loop: "{{ logical_volumes }}"
+    when: ansible_lvm.lvs is defined
+
+  - name: Ensure mount point is present
+    file:
+      path: "{{ item.mount_path }}"
+      state: directory
+    loop: "{{ logical_volumes }}"
+
+  - name: Ensure filesystem is mounted
+    mount:
+      path: "{{ item.mount_path }}"
+      src: "/dev/{{ item.vgroup }}/{{ item.name }}"
+      fstype: ext4
+      state: mounted
+    loop: "{{ logical_volumes }}"
+    when: ansible_lvm.lvs is defined

@@ -1,0 +1,27 @@
+- name: Create users
+  hosts: all
+  vars_files:
+    - list_of_users.yml
+
+  tasks:
+  - name: Ensure group is present
+    group:
+      name: automation
+      state: present
+
+  - name: ensure users are created
+    user:
+      name: "{{ item.name }}"
+      uid: "{{ item.uid }}"
+      groups: "{{ item.group }}"
+      password: "{{ item.passwd | password_hash('sha512') }}"
+      state: present
+    loop: "{{ users }}"
+    changed_when: false
+
+
+  - name: Add ssh keys
+    authorized_key:
+      user: "{{ item.name }}"
+      key:  "{{ lookup('file', 'files/'+ item.name + '.pub') }}"
+    loop: "{{ users }}"
